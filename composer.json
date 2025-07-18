@@ -60,7 +60,10 @@
         "laravel": {
             "providers": [
                 "BlissJaspis\\RajaOngkir\\Providers\\RajaOngkirServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "RajaOngkir": "BlissJaspis\\RajaOngkir\\Facades\\RajaOngkir"
+            }
         }
     },
     "minimum-stability": "stable",
