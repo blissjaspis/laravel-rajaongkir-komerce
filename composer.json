@@ -22,22 +22,31 @@
     "autoload-dev": {
         "psr-4": {
             "Workbench\\App\\": "workbench/app/",
-            "BlissJaspis\\RajaOngkir\\Tests\\": "tests/"
+            "BlissJaspis\\RajaOngkir\\Tests\\": "tests/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
     "scripts": {
         "post-autoload-dump": [
+            "@clear",
+            "@prepare",
             "@composer run prepare"
         ],
         "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
-        "build": [
-            "@composer run prepare",
-            "@php vendor/bin/testbench workbench:build --ansi"
-        ],
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
         "analyze": "vendor/bin/phpstan analyse",
         "test": "@php vendor/bin/phpunit",
-        "format": "vendor/bin/pint"
+        "format": "vendor/bin/pint",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve --ansi"
+        ],
+        "lint": [
+            "@php vendor/bin/pint --ansi"
+        ]
     },
     "authors": [
         {
