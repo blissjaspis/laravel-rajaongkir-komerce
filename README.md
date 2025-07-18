@@ -33,18 +33,18 @@ RAJAONGKIR_BASE_URL=https://rajaongkir.komerce.id/api/v1
 You can use this package by injecting the `BlissJaspis\RajaOngkir\RajaOngkir` class into your controller or service.
 
 ```php
-use BlissJaspis\RajaOngkir\RajaOngkir;
+use BlissJaspis\RajaOngkir\Facades\RajaOngkir;
 
 class YourController
 {
-    protected $rajaOngkir;
-
-    public function __construct(RajaOngkir $rajaOngkir)
-    {
-        $this->rajaOngkir = $rajaOngkir;
-    }
-
     // ...
+
+    public function getProvinces()
+    {
+        $provinces = RajaOngkir::getProvinces();
+
+        return $provinces;
+    }
 }
 ```
 

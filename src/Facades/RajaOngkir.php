@@ -2,7 +2,6 @@
 
 namespace BlissJaspis\RajaOngkir\Facades;
 
-use BlissJaspis\RajaOngkir\RajaOngkir as RajaOngkirService;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -22,6 +21,6 @@ final class RajaOngkir extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return RajaOngkirService::class;
+        return \BlissJaspis\RajaOngkir\RajaOngkir::class;
     }
 }
