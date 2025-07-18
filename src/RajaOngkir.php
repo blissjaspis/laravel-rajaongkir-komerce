@@ -17,8 +17,8 @@ class RajaOngkir
 
     public function __construct()
     {
-        $this->apiKey = config('laravel-rajaongkir-komerce.api_key');
-        $this->baseUrl = config('laravel-rajaongkir-komerce.base_url');
+        $this->apiKey = config('rajaongkir-komerce.api_key');
+        $this->baseUrl = config('rajaongkir-komerce.base_url');
     }
 
     public function getProvinces()

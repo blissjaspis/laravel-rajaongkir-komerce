@@ -18,7 +18,7 @@ class LaravelRajaOngkirKomerceTest extends TestCase
     #[Test]
     public function config_can_publish()
     {
-        $this->artisan('vendor:publish --provider="BlissJaspis\RajaOngkir\RajaOngkirServiceProvider"')
+        $this->artisan('vendor:publish --provider="BlissJaspis\RajaOngkir\Providers\RajaOngkirServiceProvider"')
             ->assertExitCode(0);
     }
 }
