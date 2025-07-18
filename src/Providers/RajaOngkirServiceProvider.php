@@ -13,7 +13,7 @@ class RajaOngkirServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/rajaongkir-komerce.php',
+            __DIR__.'/../../config/rajaongkir-komerce.php',
             'rajaongkir-komerce'
         );
 
@@ -27,7 +27,7 @@ class RajaOngkirServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/rajaongkir-komerce.php' => config_path('rajaongkir-komerce.php'),
+                __DIR__.'/../../config/rajaongkir-komerce.php' => config_path('rajaongkir-komerce.php'),
             ], 'config');
         }
     }

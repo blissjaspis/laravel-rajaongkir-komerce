@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace BlissJaspis\RajaOngkir\Tests;
 
 use BlissJaspis\RajaOngkir\Providers\RajaOngkirServiceProvider;
 

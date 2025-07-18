@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit;
+namespace BlissJaspis\RajaOngkir\Tests\Unit;
 
 use BlissJaspis\RajaOngkir\RajaOngkir;
-use Tests\TestCase;
+use BlissJaspis\RajaOngkir\Tests\TestCase;
 
 class LaravelRajaOngkirKomerceTest extends TestCase
 {
