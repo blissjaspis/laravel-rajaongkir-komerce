@@ -30,8 +30,7 @@
     "scripts": {
         "post-autoload-dump": [
             "@clear",
-            "@prepare",
-            "@composer run prepare"
+            "@prepare"
         ],
         "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",

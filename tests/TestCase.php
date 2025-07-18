@@ -3,9 +3,12 @@
 namespace BlissJaspis\RajaOngkir\Tests;
 
 use BlissJaspis\RajaOngkir\Providers\RajaOngkirServiceProvider;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
+    use WithWorkbench;
+    
     protected function setUp(): void
     {
         parent::setUp();
@@ -22,17 +25,14 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getEnvironmentSetUp($app): void
     {
-        $app['config']->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
-        $app['config']->set('database.default', 'sqlite');
-        $app['config']->set('database.connections.sqlite', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-        ]);
-        $app['config']->set('rajaongkir-komerce.api_key', 'your-api-key');
-        $app['config']->set('rajaongkir-komerce.base_url', 'https://rajaongkir.komerce.id/api/v1');
-        $app['config']->set('rajaongkir-komerce.headers', [
-            'Content-Type' => 'application/x-www-form-urlencoded',
-            'Accept' => 'application/json',
-        ]);
+        tap($app['config'], function ($config) {
+            $config->set('database.default', 'sqlite');
+            $config->set('database.connections.sqlite', [
+                'driver' => 'sqlite',
+                'database' => ':memory:',
+            ]);
+            $config->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
+            $config->set('rajaongkir-komerce.api_key', 'your-api-key');
+        });
     }
 }
