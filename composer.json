@@ -1,0 +1,45 @@
+{
+    "name": "blissjaspis/laravel-rajaongkir-komerce",
+    "description": "Laravel Rajaongkir From Komerce",
+    "type": "library",
+    "version": "1.0.0",
+    "require": {
+        "guzzlehttp/guzzle": "^7.9",
+        "illuminate/console": "^10.0 | ^11.0 | ^12.0",
+        "illuminate/support": "^10.0 | ^11.0 | ^12.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.4",
+        "phpunit/phpunit": "^12.2"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "BlissJaspis\\RajaOngkir\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Workbench\\App\\": "workbench/app/",
+            "BlissJaspis\\RajaOngkir\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Bliss Jaspis",
+            "email": "jaspis_zzt@ymail.com"
+        }
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BlissJaspis\\RajaOngkir\\Providers\\RajaOngkirServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
