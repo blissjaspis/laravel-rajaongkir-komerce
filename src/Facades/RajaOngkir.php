@@ -2,10 +2,11 @@
 
 namespace BlissJaspis\RajaOngkir\Facades;
 
+use BlissJaspis\RajaOngkir\RajaOngkir as RajaOngkirService;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array getProvince()
+ * @method static array getProvinces()
  * @method static array getCity(int $provinceId)
  * @method static array getDistrict(int $cityId)
  * @method static array getSubdistrict(int $districtId)
@@ -21,6 +22,6 @@ final class RajaOngkir extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'rajaongkir';
+        return RajaOngkirService::class;
     }
 }
