@@ -2,6 +2,7 @@
 
 namespace BlissJaspis\RajaOngkir\Providers;
 
+use BlissJaspis\RajaOngkir\RajaOngkir;
 use Illuminate\Support\ServiceProvider;
 
 class RajaOngkirServiceProvider extends ServiceProvider
@@ -12,9 +13,11 @@ class RajaOngkirServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/laravel-rajaongkir-komerce.php',
-            'laravel-rajaongkir-komerce'
+            __DIR__.'/../config/rajaongkir-komerce.php',
+            'rajaongkir-komerce'
         );
+
+        $this->app->singleton(RajaOngkir::class);
     }
     
     /**
@@ -24,7 +27,7 @@ class RajaOngkirServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/laravel-rajaongkir-komerce.php' => config_path('laravel-rajaongkir-komerce.php'),
+                __DIR__.'/../config/rajaongkir-komerce.php' => config_path('rajaongkir-komerce.php'),
             ], 'config');
         }
     }
