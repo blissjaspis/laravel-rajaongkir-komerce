@@ -59,17 +59,10 @@ class YourController
 - `getCostInternational(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest')`
 - `searchDomestic(string $search, int $limit = 10, int $offset = 0)`
 - `searchInternational(string $search, int $limit = 10, int $offset = 0)`
+- `getListCourier()`
 
 ### **API Reference**
 > For more detailed information about the API endpoints, parameters, and response structures, please refer to the official [RajaOngkir Komerce API Documentation](https://komerceapi.readme.io/reference/rajaongkir-api).
-
-### Example
-
-Here is an example of how to get all provinces:
-
-```php
-$provinces = $this->rajaOngkir->getProvinces();
-```
 
 ## Testing
 
