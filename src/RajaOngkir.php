@@ -91,8 +91,14 @@ class RajaOngkir
 
     private function sendRequest(string $method, string $endpoint, array $data = [])
     {
+        $contentType = match (strtoupper($method)) {
+            'POST' => 'application/x-www-form-urlencoded',
+            default => 'application/json',
+        };
+        
         $request = Http::baseUrl($this->baseUrl)->withHeaders([
-            'key' => $this->apiKey
+            'key' => $this->apiKey,
+            'Content-Type' => $contentType
         ]);
 
         $response = match (strtoupper($method)) {
