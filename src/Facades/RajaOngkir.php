@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array getCostInternational(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest')
  * @method static array searchDomestic(string $search, int $limit = 10, int $offset = 0)
  * @method static array searchInternational(string $search, int $limit = 10, int $offset = 0)
+ * @method static array getListCourier()
  * 
  * @see \BlissJaspis\RajaOngkir\RajaOngkir
  */

@@ -91,16 +91,38 @@ class RajaOngkir
 
     private function sendRequest(string $method, string $endpoint, array $data = [])
     {
-        $request = Http::withHeaders([
-            'key' => $this->apiKey,
-            ...$this->headers,
+        $request = Http::baseUrl($this->baseUrl)->withHeaders([
+            'key' => $this->apiKey
         ]);
 
         $response = match (strtoupper($method)) {
-            'POST' => $request->post($this->baseUrl . $endpoint, $data),
-            default => $request->get($this->baseUrl . $endpoint, $data),
+            'POST' => $request->asForm()->post($endpoint, $data),
+            default => $request->get($endpoint, $data),
         };
 
         return $response->throw()->json();
+    }
+
+    public function getListCourier()
+    {
+        return [
+            'jne' => 'JNE',
+            'sicepat' => 'SICEPAT',
+            'ide' => 'IDE',
+            'sap' => 'SAP',
+            'jnt' => 'J&T',
+            'ninja' => 'NINJA',
+            'tiki' => 'TIKI',
+            'lion' => 'LION',
+            'anteraja' => 'ANTERAJA',
+            'pos' => 'POS',
+            'ncs' => 'NCS',
+            'rex' => 'REX',
+            'rpx' => 'RPX',
+            'sentral' => 'SENTRAL',
+            'star' => 'STAR',
+            'wahana' => 'WAHANA',
+            'dse' => 'DSE',
+        ];
     }
 }
