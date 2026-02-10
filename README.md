@@ -123,7 +123,6 @@ $cities = RajaOngkir::getCity($provinceId);
 $cityId = 1;
 $districts = RajaOngkir::getDistrict($cityId);
 
-```json
 {
   "meta": {
     "message": "Success Get Districts",
@@ -197,7 +196,7 @@ $destinations = RajaOngkir::searchDomestic($search, $limit, $offset);
 $search = 'Malaysia';
 $limit = 10; // optional
 $offset = 0; // optional
-$destinations = RajaOongkir::searchInternational($search, $limit, $offset);
+$destinations = RajaOngkir::searchInternational($search, $limit, $offset);
 
 {
   "meta": {
@@ -296,7 +295,7 @@ $cost = RajaOongkir::getCostInternational($origin, $destination, $weight, $couri
 $waybill = 'MT685U91';
 $courier = 'jne';
 
-$waybill = RajaOongkir::getWaybill($waybill, $courier);
+$waybill = RajaOngkir::getWaybill($waybill, $courier);
 
 {
   "meta": {
@@ -355,7 +354,6 @@ $couriers = RajaOngkir::getListCourier();
     "code": 200,
     "status": "success"
   },
-}
   "data": [
     {
       "code": "jne",
