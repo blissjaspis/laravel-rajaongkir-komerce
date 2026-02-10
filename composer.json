@@ -2,7 +2,7 @@
     "name": "blissjaspis/laravel-rajaongkir-komerce",
     "description": "Laravel Rajaongkir From Komerce",
     "type": "library",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "require": {
         "guzzlehttp/guzzle": "^7.9",
         "illuminate/console": "^10.0 | ^11.0 | ^12.0",
