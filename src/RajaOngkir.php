@@ -11,8 +11,7 @@ class RajaOngkir
     protected $baseUrl;
 
     protected $headers = [
-        'Accept' => 'application/json',
-        'Content-Type' => 'application/json'
+        'Accept' => 'application/json'
     ];
 
     public function __construct()
@@ -91,13 +90,12 @@ class RajaOngkir
 
     private function sendRequest(string $method, string $endpoint, array $data = [])
     {
-        $contentType = match (strtoupper($method)) {
-            'POST' => 'application/x-www-form-urlencoded',
-            default => 'application/json',
-        };
-
         $headers = $this->headers;
-        $headers['Content-Type'] = $contentType;
+
+        // Only set Content-Type for POST requests since GET requests don't have a body
+        if (strtoupper($method) === 'POST') {
+            $headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        }
         
         $request = Http::baseUrl($this->baseUrl)->withHeaders([
             'key' => $this->apiKey,
