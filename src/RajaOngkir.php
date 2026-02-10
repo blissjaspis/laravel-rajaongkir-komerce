@@ -95,10 +95,13 @@ class RajaOngkir
             'POST' => 'application/x-www-form-urlencoded',
             default => 'application/json',
         };
+
+        $headers = $this->headers;
+        $headers['Content-Type'] = $contentType;
         
         $request = Http::baseUrl($this->baseUrl)->withHeaders([
             'key' => $this->apiKey,
-            'Content-Type' => $contentType
+            ...$headers,
         ]);
 
         $response = match (strtoupper($method)) {

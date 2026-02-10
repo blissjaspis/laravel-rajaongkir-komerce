@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getProvinces()
- * @method static array getCity(int $provinceId)
- * @method static array getDistrict(int $cityId)
- * @method static array getSubdistrict(int $districtId)
+ * @method static array getCity(string|int $provinceId)
+ * @method static array getDistrict(string|int $cityId)
+ * @method static array getSubDistrict(string|int $districtId)
  * @method static array getWaybill(string $waybill, string $courier)
  * @method static array getCostDomestic(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest')
  * @method static array getCostInternational(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest')
