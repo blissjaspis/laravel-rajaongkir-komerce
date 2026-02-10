@@ -3,7 +3,7 @@
 > **Note**
 > This package supports Laravel versions 10, 11, and 12.
 
-This package provides a simple and easy-to-use Laravel wrapper for the RajaOngkir Komerce API.
+This package provides a simple and easy-to-use Laravel wrapper for the RajaOngkir Komerce API. It supports two methods of address lookup: hierarchical step-by-step selection and direct search with autocomplete functionality.
 
 ## Installation
 
@@ -18,8 +18,6 @@ You must publish the configuration file with:
 ```bash
 php artisan vendor:publish --provider="BlissJaspis\RajaOngkir\Providers\RajaOngkirServiceProvider" --tag="config"
 ```
-
-This will create a `config/rajaongkir-komerce.php` file in your `config` directory.
 
 Add the following to your `.env` file:
 
@@ -48,7 +46,6 @@ You can call the API through the facade in controllers/services:
 use BlissJaspis\RajaOngkir\Facades\RajaOngkir;
 ```
 
-
 ### Choosing Between Methods
 
 **Use Method 1 (Step-by-step)** if:
@@ -63,7 +60,6 @@ use BlissJaspis\RajaOngkir\Facades\RajaOngkir;
 - You want to provide international shipping options
 
 Method 2 is recommended for new implementations as it provides a more modern and user-friendly approach.
-
 
 ### Method 1: Step-by-Step Location Lookup
 
@@ -259,7 +255,7 @@ $weight = 1000;
 $courier = 'jne';
 $filter = 'lowest';
 
-$cost = RajaOongkir::getCostInternational($origin, $destination, $weight, $courier, $filter);
+$cost = RajaOngkir::getCostInternational($origin, $destination, $weight, $courier, $filter);
 
 {
   "meta": {
@@ -338,9 +334,9 @@ $waybill = RajaOngkir::getWaybill($waybill, $courier);
     "manifest": [
       // ... more manifest
     ]
+  }
 }
 ```
-
 
 ### Other Useful Methods
 
@@ -367,8 +363,18 @@ $couriers = RajaOngkir::getListCourier();
 }
 ```
 
-### **API Reference**
-> For more detailed information about the API endpoints, parameters, and response structures, please refer to the official [RajaOngkir Komerce API Documentation](https://komerceapi.readme.io/reference/rajaongkir-api).
+## API Reference
+
+For comprehensive API documentation including:
+- Complete method signatures with parameter types
+- Detailed response structures
+- Error handling examples
+- Testing examples
+- Best practices
+- Migration guides
+- Troubleshooting
+
+Please see [API-REFERENCE.md](API-REFERENCE.md) for detailed technical documentation optimized for developers and AI assistants.
 
 ## Testing
 
