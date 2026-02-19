@@ -10,7 +10,7 @@ This package provides a simple and easy-to-use Laravel wrapper for the RajaOngki
 You can install the package via composer:
 
 ```bash
-composer require bliss-jaspis/laravel-rajaongkir-komerce
+composer require blissjaspis/laravel-rajaongkir-komerce
 ```
 
 You must publish the configuration file with:
