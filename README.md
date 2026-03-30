@@ -1,7 +1,7 @@
 # Laravel RajaOngkir From Komerce
 
 > **Note**
-> This package supports Laravel versions 10, 11, and 12.
+> This package supports Laravel versions 11, 12, and 13.
 
 This package provides a simple and easy-to-use Laravel wrapper for the RajaOngkir Komerce API. It supports two methods of address lookup: hierarchical step-by-step selection and direct search with autocomplete functionality.
 

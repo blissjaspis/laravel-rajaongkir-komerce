@@ -2,16 +2,17 @@
     "name": "blissjaspis/laravel-rajaongkir-komerce",
     "description": "Laravel Rajaongkir From Komerce",
     "type": "library",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "require": {
+        "php": "^8.2",
         "guzzlehttp/guzzle": "^7.9",
-        "illuminate/console": "^10.0 | ^11.0 | ^12.0",
-        "illuminate/support": "^10.0 | ^11.0 | ^12.0"
+        "illuminate/console": "^11.0 || ^12.0 || ^13.0",
+        "illuminate/support": "^11.0 || ^12.0 || ^13.0"
     },
     "require-dev": {
-        "laravel/pint": "^1.24",
-        "orchestra/testbench": "^10.4",
-        "phpunit/phpunit": "^12.2"
+        "laravel/pint": "^1.29",
+        "orchestra/testbench": "^10.0 || ^11.0",
+        "phpunit/phpunit": "^12.0 || ^13.0"
     },
     "license": "MIT",
     "autoload": {
