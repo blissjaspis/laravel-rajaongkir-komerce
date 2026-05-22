@@ -1,5 +1,7 @@
 <?php
 
+use BlissJaspis\RajaOngkir\Providers\RajaOngkirServiceProvider;
+
 return [
     'name' => 'RajaOngkir',
     'env' => 'local',
@@ -12,6 +14,6 @@ return [
     'key' => env('APP_KEY', 'base64:'.base64_encode(random_bytes(32))),
     'cipher' => 'AES-256-CBC',
     'providers' => [
-        BlissJaspis\RajaOngkir\Providers\RajaOngkirServiceProvider::class,
-    ]
+        RajaOngkirServiceProvider::class,
+    ],
 ];

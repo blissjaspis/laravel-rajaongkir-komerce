@@ -6,41 +6,47 @@ use Illuminate\Support\Facades\Http;
 
 class RajaOngkir
 {
-    protected $apiKey;
+    protected string $apiKey;
 
-    protected $baseUrl;
+    protected string $baseUrl;
 
-    protected $headers = [
-        'Accept' => 'application/json'
+    /** @var array<string, string> */
+    protected array $headers = [
+        'Accept' => 'application/json',
     ];
 
     public function __construct()
     {
-        $this->apiKey = config('rajaongkir-komerce.api_key');
-        $this->baseUrl = config('rajaongkir-komerce.base_url');
+        $this->apiKey = (string) config('rajaongkir-komerce.api_key');
+        $this->baseUrl = (string) config('rajaongkir-komerce.base_url');
     }
 
-    public function getProvinces()
+    /** @return array<string, mixed> */
+    public function getProvinces(): array
     {
         return $this->sendRequest('get', '/destination/province');
     }
 
-    public function getCity($provinceId)
+    /** @return array<string, mixed> */
+    public function getCity(int|string $provinceId): array
     {
-        return $this->sendRequest('get', '/destination/city/' . $provinceId);
+        return $this->sendRequest('get', '/destination/city/'.$provinceId);
     }
 
-    public function getDistrict($cityId)
+    /** @return array<string, mixed> */
+    public function getDistrict(int|string $cityId): array
     {
-        return $this->sendRequest('get', '/destination/district/' . $cityId);
+        return $this->sendRequest('get', '/destination/district/'.$cityId);
     }
 
-    public function getSubDistrict($districtId)
+    /** @return array<string, mixed> */
+    public function getSubDistrict(int|string $districtId): array
     {
-        return $this->sendRequest('get', '/destination/sub-district/' . $districtId);
+        return $this->sendRequest('get', '/destination/sub-district/'.$districtId);
     }
 
-    public function getWaybill(string $waybill, string $courier)
+    /** @return array<string, mixed> */
+    public function getWaybill(string $waybill, string $courier): array
     {
         return $this->sendRequest('post', '/track/waybill', [
             'awb' => $waybill,
@@ -48,7 +54,8 @@ class RajaOngkir
         ]);
     }
 
-    public function getCostDomestic(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest')
+    /** @return array<string, mixed> */
+    public function getCostDomestic(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest'): array
     {
         return $this->sendRequest('post', '/calculate/domestic-cost', [
             'origin' => $origin,
@@ -59,7 +66,8 @@ class RajaOngkir
         ]);
     }
 
-    public function getCostInternational(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest')
+    /** @return array<string, mixed> */
+    public function getCostInternational(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest'): array
     {
         return $this->sendRequest('post', '/calculate/international-cost', [
             'origin' => $origin,
@@ -70,7 +78,8 @@ class RajaOngkir
         ]);
     }
 
-    public function searchDomestic(string $search, int $limit = 10, int $offset = 0)
+    /** @return array<string, mixed> */
+    public function searchDomestic(string $search, int $limit = 10, int $offset = 0): array
     {
         return $this->sendRequest('get', '/destination/domestic-destination', [
             'search' => $search,
@@ -79,7 +88,8 @@ class RajaOngkir
         ]);
     }
 
-    public function searchInternational(string $search, int $limit = 10, int $offset = 0)
+    /** @return array<string, mixed> */
+    public function searchInternational(string $search, int $limit = 10, int $offset = 0): array
     {
         return $this->sendRequest('get', '/destination/international-destination', [
             'search' => $search,
@@ -88,7 +98,11 @@ class RajaOngkir
         ]);
     }
 
-    private function sendRequest(string $method, string $endpoint, array $data = [])
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    private function sendRequest(string $method, string $endpoint, array $data = []): array
     {
         $headers = $this->headers;
 
@@ -96,7 +110,7 @@ class RajaOngkir
         if (strtoupper($method) === 'POST') {
             $headers['Content-Type'] = 'application/x-www-form-urlencoded';
         }
-        
+
         $request = Http::baseUrl($this->baseUrl)->withHeaders([
             'key' => $this->apiKey,
             ...$headers,
@@ -107,10 +121,13 @@ class RajaOngkir
             default => $request->get($endpoint, $data),
         };
 
-        return $response->throw()->json();
+        $result = $response->throw()->json();
+
+        return is_array($result) ? $result : [];
     }
 
-    public function getListCourier()
+    /** @return array<string, string> */
+    public function getListCourier(): array
     {
         return [
             'jne' => 'JNE',

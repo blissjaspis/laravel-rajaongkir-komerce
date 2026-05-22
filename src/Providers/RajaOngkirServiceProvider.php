@@ -10,7 +10,7 @@ class RajaOngkirServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(
             __DIR__.'/../../config/rajaongkir-komerce.php',
@@ -19,11 +19,11 @@ class RajaOngkirServiceProvider extends ServiceProvider
 
         $this->app->singleton(RajaOngkir::class);
     }
-    
+
     /**
      * Bootstrap the application services.
      */
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([

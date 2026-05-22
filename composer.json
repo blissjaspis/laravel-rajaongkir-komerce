@@ -2,7 +2,6 @@
     "name": "blissjaspis/laravel-rajaongkir-komerce",
     "description": "Laravel Rajaongkir From Komerce",
     "type": "library",
-    "version": "2.0.0",
     "require": {
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.9",
@@ -10,9 +9,13 @@
         "illuminate/support": "^11.0 || ^12.0 || ^13.0"
     },
     "require-dev": {
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.29",
-        "orchestra/testbench": "^10.0 || ^11.0",
-        "phpunit/phpunit": "^12.0 || ^13.0"
+        "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
+        "php-parallel-lint/php-parallel-lint": "^1.4",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0 || ^13.0"
     },
     "license": "MIT",
     "autoload": {
@@ -36,16 +39,25 @@
         "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": "@php vendor/bin/testbench workbench:build --ansi",
-        "analyze": "vendor/bin/phpstan analyse",
+        "analyse": "@php vendor/bin/phpstan analyse --ansi",
+        "analyze": "@analyse",
         "test": "@php vendor/bin/phpunit",
-        "format": "vendor/bin/pint",
+        "test:lint": "@php vendor/bin/parallel-lint --exclude vendor .",
+        "format": "@php vendor/bin/pint",
+        "format:check": "@php vendor/bin/pint --test",
         "serve": [
             "Composer\\Config::disableProcessTimeout",
             "@build",
             "@php vendor/bin/testbench serve --ansi"
         ],
         "lint": [
-            "@php vendor/bin/pint --ansi"
+            "@test:lint",
+            "@format:check",
+            "@analyse"
+        ],
+        "check": [
+            "@lint",
+            "@test"
         ]
     },
     "authors": [
@@ -55,6 +67,9 @@
         }
     ],
     "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        },
         "sort-packages": true
     },
     "extra": {

@@ -3,6 +3,8 @@
 composer.lock
 /phpunit.xml
 .phpunit.result.cache
+.phpunit.cache
+/build
 *.log
 .vscode
 .idea

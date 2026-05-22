@@ -376,10 +376,17 @@ For comprehensive API documentation including:
 
 Please see [API-REFERENCE.md](API-REFERENCE.md) for detailed technical documentation optimized for developers and AI assistants.
 
-## Testing
+## Testing & Quality
 
 ```bash
+# Run tests
 composer test
+
+# Run linting (syntax, code style, static analysis)
+composer lint
+
+# Run tests + linting
+composer check
 ```
 
 ## Changelog

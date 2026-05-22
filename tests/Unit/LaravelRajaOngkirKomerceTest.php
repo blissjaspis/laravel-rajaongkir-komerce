@@ -9,14 +9,14 @@ use PHPUnit\Framework\Attributes\Test;
 class LaravelRajaOngkirKomerceTest extends TestCase
 {
     #[Test]
-    public function laravel_rajaongkir_komerce_can_be_instantiated()
+    public function laravel_rajaongkir_komerce_can_be_instantiated(): void
     {
-        $rajaongkir = new RajaOngkir();
+        $rajaongkir = new RajaOngkir;
         $this->assertInstanceOf(RajaOngkir::class, $rajaongkir);
     }
 
     #[Test]
-    public function config_can_publish()
+    public function config_can_publish(): void
     {
         $this->artisan('vendor:publish --provider="BlissJaspis\RajaOngkir\Providers\RajaOngkirServiceProvider"')
             ->assertExitCode(0);

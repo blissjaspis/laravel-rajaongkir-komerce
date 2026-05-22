@@ -20,8 +20,11 @@ If you find a bug or have a suggestion:
 1. Fork the repository
 2. Create a new branch for your feature or fix: `git checkout -b feature/your-feature-name`
 3. Make your changes
-4. Run tests: `composer test`
-5. Run code formatting: `composer format`
+4. Run the full quality check: `composer check`
+5. Or run individually:
+   - Tests: `composer test`
+   - Lint (syntax, style, static analysis): `composer lint`
+   - Auto-format code: `composer format`
 6. Commit your changes with a clear message
 7. Push to your fork and submit a pull request
 
@@ -38,13 +41,28 @@ composer install
 # Run tests
 composer test
 
-# Run code formatting
+# Run linting (parallel-lint, Pint check, PHPStan)
+composer lint
+
+# Run static analysis only
+composer analyse
+
+# Auto-format code
 composer format
+
+# Run everything (lint + tests)
+composer check
 ```
 
-### Code Style
+### Code Style & Static Analysis
 
-This package follows the Laravel Pint code style. Please run `composer format` before submitting your pull request.
+This package uses:
+
+- **PHP Parallel Lint** — fast PHP syntax validation (`composer test:lint`)
+- **Laravel Pint** — code style (`composer format` / `composer format:check`)
+- **PHPStan + Larastan** — static analysis at level 6 (`composer analyse`)
+
+Please run `composer check` before submitting your pull request.
 
 ### Testing
 
