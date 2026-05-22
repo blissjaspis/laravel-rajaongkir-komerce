@@ -1,9 +1,19 @@
 # Laravel RajaOngkir From Komerce
 
-> **Note**
-> This package supports Laravel versions 11, 12, and 13.
+[![Tests](https://github.com/blissjaspis/laravel-rajaongkir-komerce/actions/workflows/tests.yml/badge.svg)](https://github.com/blissjaspis/laravel-rajaongkir-komerce/actions/workflows/tests.yml)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/blissjaspis/laravel-rajaongkir-komerce.svg)](https://packagist.org/packages/blissjaspis/laravel-rajaongkir-komerce)
+[![Total Downloads](https://img.shields.io/packagist/dt/blissjaspis/laravel-rajaongkir-komerce.svg)](https://packagist.org/packages/blissjaspis/laravel-rajaongkir-komerce)
+[![License](https://img.shields.io/packagist/l/blissjaspis/laravel-rajaongkir-komerce.svg)](https://packagist.org/packages/blissjaspis/laravel-rajaongkir-komerce)
+
 
 This package provides a simple and easy-to-use Laravel wrapper for the RajaOngkir Komerce API. It supports two methods of address lookup: hierarchical step-by-step selection and direct search with autocomplete functionality.
+
+## Requirements
+
+| Requirement | Version |
+|-------------|---------|
+| PHP | ^8.2 |
+| Laravel | ^11.0, ^12.0, or ^13.0 |
 
 ## Installation
 
@@ -16,6 +26,12 @@ composer require blissjaspis/laravel-rajaongkir-komerce
 You must publish the configuration file with:
 
 ```bash
+php artisan vendor:publish --tag=rajaongkir-komerce-config
+```
+
+Or using the provider:
+
+```bash
 php artisan vendor:publish --provider="BlissJaspis\RajaOngkir\Providers\RajaOngkirServiceProvider" --tag="config"
 ```
 
@@ -24,7 +40,17 @@ Add the following to your `.env` file:
 ```env
 RAJAONGKIR_API_KEY=your-api-key
 RAJAONGKIR_BASE_URL=https://rajaongkir.komerce.id/api/v1
+
+# Optional
+RAJAONGKIR_TIMEOUT=30
+RAJAONGKIR_RETRY_TIMES=0
+RAJAONGKIR_RETRY_SLEEP=100
+RAJAONGKIR_FAKE=false
 ```
+
+Set `RAJAONGKIR_FAKE=true` in local development to stub all API responses without calling Komerce.
+
+The package is auto-discovered via Laravel's package discovery. No manual registration is required.
 
 ## Usage
 
@@ -40,10 +66,43 @@ This package supports 2 ways to access RajaOngkir data:
 1. Step-by-step location lookup (`province -> city -> district -> subdistrict`)
 2. Direct search and shipping cost lookup (search by keyword, then calculate cost)
 
-You can call the API through the facade in controllers/services:
+You can call the API through the facade or Laravel's service container:
 
 ```php
 use BlissJaspis\RajaOngkir\Facades\RajaOngkir;
+use BlissJaspis\RajaOngkir\RajaOngkir as RajaOngkirClient;
+
+// Via Facade (recommended)
+$response = RajaOngkir::getProvinces();
+$provinces = $response->data;
+
+// Via dependency injection (interface)
+use BlissJaspis\RajaOngkir\Contracts\RajaOngkirClient;
+
+public function __construct(private RajaOngkirClient $rajaOngkir) {}
+
+// Or resolve from the container
+app(RajaOngkirClient::class)->getProvinces();
+```
+
+API methods return a `RajaOngkirResponse` object with `meta`, `data`, `status()`, and `successful()`. Use `getListCourier()` when you need the static courier list (hardcoded from Komerce documentation — no API endpoint).
+
+`RajaOngkir` is registered as a **singleton** in the service container, so the facade and `app()` resolve the same instance.
+
+### Error handling
+
+Failed HTTP requests and API error responses throw `BlissJaspis\RajaOngkir\Exceptions\RajaOngkirException`:
+
+```php
+use BlissJaspis\RajaOngkir\Exceptions\RajaOngkirException;
+use BlissJaspis\RajaOngkir\Facades\RajaOngkir;
+
+try {
+    $response = RajaOngkir::getProvinces();
+} catch (RajaOngkirException $exception) {
+    $statusCode = $exception->statusCode;
+    $body = $exception->response;
+}
 ```
 
 ### Choosing Between Methods
@@ -67,7 +126,8 @@ Use this method when users select addresses hierarchically.
 
 #### 1. Finding Provinces
 ```php
-$provinces = RajaOngkir::getProvinces();
+$response = RajaOngkir::getProvinces();
+$provinces = $response->data;
 
 {
   "meta": {
@@ -340,27 +400,17 @@ $waybill = RajaOngkir::getWaybill($waybill, $courier);
 
 ### Other Useful Methods
 
-- `getListCourier()` returns supported courier codes and names.
+`getListCourier()` returns a static list of supported courier codes and display names (not an API call):
+
 ```php
 $couriers = RajaOngkir::getListCourier();
 
-{
-  "meta": {
-    "message": "Success Get List Courier",
-    "code": 200,
-    "status": "success"
-  },
-  "data": [
-    {
-      "code": "jne",
-      "name": "JNE"
-    },
-    {
-      "code": "sicepat",
-      "name": "SICEPAT"
-    }
-  ]
-}
+// [
+//     'jne' => 'JNE',
+//     'sicepat' => 'SICEPAT',
+//     'tiki' => 'TIKI',
+//     // ...
+// ]
 ```
 
 ## API Reference
@@ -378,14 +428,17 @@ Please see [API-REFERENCE.md](API-REFERENCE.md) for detailed technical documenta
 
 ## Testing & Quality
 
+This package uses [GitHub Actions](.github/workflows/tests.yml) for continuous integration: lint runs once, then tests run across PHP 8.2–8.5 and Laravel 11–13.
+
+| Command | Description |
+|---------|-------------|
+| `composer test` | Run PHPUnit tests |
+| `composer lint` | Syntax check, Pint (dry-run), and PHPStan (level 6) |
+| `composer analyse` | Run PHPStan static analysis only |
+| `composer format` | Auto-format code with Laravel Pint |
+| `composer check` | Run `lint` + `test` (recommended before PRs) |
+
 ```bash
-# Run tests
-composer test
-
-# Run linting (syntax, code style, static analysis)
-composer lint
-
-# Run tests + linting
 composer check
 ```
 
@@ -395,7 +448,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+For contribution guidelines and local development setup, see [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Security Vulnerabilities
 

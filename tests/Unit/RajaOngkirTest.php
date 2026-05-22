@@ -2,9 +2,9 @@
 
 namespace BlissJaspis\RajaOngkir\Tests\Unit;
 
+use BlissJaspis\RajaOngkir\Exceptions\RajaOngkirException;
 use BlissJaspis\RajaOngkir\RajaOngkir;
 use BlissJaspis\RajaOngkir\Tests\TestCase;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -17,7 +17,7 @@ class RajaOngkirTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->rajaOngkir = new RajaOngkir;
+        $this->rajaOngkir = $this->makeRajaOngkir();
     }
 
     #[Test]
@@ -45,8 +45,8 @@ class RajaOngkirTest extends TestCase
                    ! $request->hasHeader('Content-Type');
         });
 
-        $this->assertEquals('success', $result['status']);
-        $this->assertCount(2, $result['data']);
+        $this->assertTrue($result->successful());
+        $this->assertCount(2, $result->data);
     }
 
     #[Test]
@@ -70,8 +70,8 @@ class RajaOngkirTest extends TestCase
                    $request->method() === 'GET';
         });
 
-        $this->assertEquals('success', $result['status']);
-        $this->assertCount(1, $result['data']);
+        $this->assertTrue($result->successful());
+        $this->assertCount(1, $result->data);
     }
 
     #[Test]
@@ -95,8 +95,8 @@ class RajaOngkirTest extends TestCase
                    $request->method() === 'GET';
         });
 
-        $this->assertEquals('success', $result['status']);
-        $this->assertCount(1, $result['data']);
+        $this->assertTrue($result->successful());
+        $this->assertCount(1, $result->data);
     }
 
     #[Test]
@@ -120,8 +120,8 @@ class RajaOngkirTest extends TestCase
                    $request->method() === 'GET';
         });
 
-        $this->assertEquals('success', $result['status']);
-        $this->assertCount(1, $result['data']);
+        $this->assertTrue($result->successful());
+        $this->assertCount(1, $result->data);
     }
 
     #[Test]
@@ -150,7 +150,7 @@ class RajaOngkirTest extends TestCase
                    $body['courier'] === 'jne';
         });
 
-        $this->assertEquals('success', $result['status']);
+        $this->assertTrue($result->successful());
     }
 
     #[Test]
@@ -182,7 +182,7 @@ class RajaOngkirTest extends TestCase
                    $body['price'] === 'lowest';
         });
 
-        $this->assertEquals('success', $result['status']);
+        $this->assertTrue($result->successful());
     }
 
     #[Test]
@@ -236,7 +236,7 @@ class RajaOngkirTest extends TestCase
                    $body['price'] === 'fastest';
         });
 
-        $this->assertEquals('success', $result['status']);
+        $this->assertTrue($result->successful());
     }
 
     #[Test]
@@ -285,7 +285,7 @@ class RajaOngkirTest extends TestCase
                    $request->url() === $url;
         });
 
-        $this->assertEquals('success', $result['status']);
+        $this->assertTrue($result->successful());
     }
 
     #[Test]
@@ -335,7 +335,7 @@ class RajaOngkirTest extends TestCase
                    $request->method() === 'GET';
         });
 
-        $this->assertEquals('success', $result['status']);
+        $this->assertTrue($result->successful());
     }
 
     #[Test]
@@ -384,7 +384,7 @@ class RajaOngkirTest extends TestCase
             '*' => Http::response(['error' => 'Unauthorized'], 401),
         ]);
 
-        $this->expectException(RequestException::class);
+        $this->expectException(RajaOngkirException::class);
 
         $this->rajaOngkir->getProvinces();
     }

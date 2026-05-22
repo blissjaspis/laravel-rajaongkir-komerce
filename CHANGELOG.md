@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [2.1.0] - 2026-05-22
+
+### Added
+
+- `RajaOngkirClient` contract for dependency injection
+- `RajaOngkirResponse` DTO for typed API responses (`meta`, `data`, `status()`, `successful()`)
+- `RajaOngkirException` for HTTP and API errors with `statusCode` and `response` payload
+- Config options: `timeout`, `retry_times`, `retry_sleep`, and `fake` mode for local development
+- HTTP client factory injection (no direct facade dependency inside `RajaOngkir`)
+- Explicit `illuminate/http` dependency for HTTP client support
+- PHPStan (level 6) with Larastan for static analysis
+- PHP Parallel Lint for syntax validation
+- GitHub Actions CI workflow with separate `lint` and `tests` jobs
+- PHPUnit configuration template (`phpunit.xml.dist`)
+- Pint configuration (`pint.json`)
+- Publish tag `rajaongkir-komerce-config` for configuration file
+- Container and facade integration tests (singleton, config merge, publish)
+- Composer scripts: `analyse`, `lint`, `format:check`, `test:lint`, and `check`
+- README badges (Tests, Packagist version, downloads, license)
+- Packagist metadata (`keywords`, `homepage`, `support`) in `composer.json`
+- Documentation index at `docs/_index.md`
+- Tests for response parsing, exceptions, and contract binding
+- Log warning when `RAJAONGKIR_API_KEY` is not configured (skipped when `fake` mode is enabled)
+
+### Changed
+
+- **BREAKING**: API methods now return `RajaOngkirResponse` instead of `array`
+- Facade resolves `RajaOngkirClient` contract
+- `getListCourier()` remains a static `array<string, string>` (sourced from documentation, not an API endpoint)
+- `RajaOngkir` now receives `apiKey` and `baseUrl` via constructor injection instead of reading `config()` internally
+- `RajaOngkirServiceProvider` registers the client as a singleton with an explicit container binding
+- Improved PHPDoc and return types across `src/` for PHPStan compatibility
+- Updated README with requirements table, dependency injection examples, error handling, and development tooling docs
+- Default config publish command now uses `--tag=rajaongkir-komerce-config`
+
+### Fixed
+
+- PHPUnit tests no longer expect `Content-Type` header on GET requests
+- Test methods now declare `: void` return types
+
 ## [2.0.0] - 2026-03-30
 
 ### Added
@@ -55,3 +97,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Initial release
+
+[Unreleased]: https://github.com/blissjaspis/laravel-rajaongkir-komerce/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/blissjaspis/laravel-rajaongkir-komerce/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/blissjaspis/laravel-rajaongkir-komerce/compare/v1.2.0...v2.0.0
+[1.2.0]: https://github.com/blissjaspis/laravel-rajaongkir-komerce/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/blissjaspis/laravel-rajaongkir-komerce/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/blissjaspis/laravel-rajaongkir-komerce/releases/tag/v1.0.0

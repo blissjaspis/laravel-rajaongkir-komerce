@@ -26,7 +26,7 @@ RAJAONGKIR_BASE_URL=https://rajaongkir.komerce.id/api/v1
 ### Publish Config
 
 ```bash
-php artisan vendor:publish --provider="BlissJaspis\RajaOngkir\Providers\RajaOngkirServiceProvider" --tag="config"
+php artisan vendor:publish --tag=rajaongkir-komerce-config
 ```
 
 ## API Reference

@@ -1,11 +1,14 @@
 {
     "name": "blissjaspis/laravel-rajaongkir-komerce",
     "description": "Laravel Rajaongkir From Komerce",
+    "keywords": ["laravel", "rajaongkir", "komerce", "shipping", "courier", "logistics", "indonesia"],
+    "homepage": "https://github.com/blissjaspis/laravel-rajaongkir-komerce",
     "type": "library",
     "require": {
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.9",
         "illuminate/console": "^11.0 || ^12.0 || ^13.0",
+        "illuminate/http": "^11.0 || ^12.0 || ^13.0",
         "illuminate/support": "^11.0 || ^12.0 || ^13.0"
     },
     "require-dev": {
@@ -18,6 +21,10 @@
         "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0 || ^13.0"
     },
     "license": "MIT",
+    "support": {
+        "issues": "https://github.com/blissjaspis/laravel-rajaongkir-komerce/issues",
+        "source": "https://github.com/blissjaspis/laravel-rajaongkir-komerce"
+    },
     "autoload": {
         "psr-4": {
             "BlissJaspis\\RajaOngkir\\": "src/"
