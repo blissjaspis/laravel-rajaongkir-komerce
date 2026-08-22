@@ -11,7 +11,7 @@ This package provides a Laravel wrapper for the RajaOngkir Komerce API with two 
 ## Installation
 
 ```bash
-composer require bliss-jaspis/laravel-rajaongkir-komerce
+composer require blissjaspis/laravel-rajaongkir-komerce
 ```
 
 ## Configuration
@@ -37,11 +37,13 @@ All methods are accessible via the facade:
 use BlissJaspis\RajaOngkir\Facades\RajaOngkir;
 ```
 
+All API methods return a `BlissJaspis\RajaOngkir\Data\RajaOngkirResponse` object exposing `meta` (array), `data` (mixed), `successful(): bool`, `status(): ?string`, and `toArray(): array`. Append `->toArray()` when you need a plain array matching the "Response Structure" blocks below (e.g. before returning a response from a controller). The only exception is `getListCourier()`, which returns a plain array.
+
 ### Core Methods
 
 #### Location Data (Hierarchical Method)
 
-##### `getProvinces(): array`
+##### `getProvinces(): RajaOngkirResponse`
 Returns all provinces in Indonesia.
 
 **Response Structure:**
@@ -63,10 +65,10 @@ Returns all provinces in Indonesia.
 
 **Example:**
 ```php
-$provinces = RajaOngkir::getProvinces();
+$provinces = RajaOngkir::getProvinces()->toArray();
 ```
 
-##### `getCity(int $provinceId): array`
+##### `getCity(int|string $provinceId): RajaOngkirResponse`
 Returns cities within a province.
 
 **Parameters:**
@@ -91,10 +93,10 @@ Returns cities within a province.
 
 **Example:**
 ```php
-$cities = RajaOngkir::getCity(11);
+$cities = RajaOngkir::getCity(11)->toArray();
 ```
 
-##### `getDistrict(int $cityId): array`
+##### `getDistrict(int|string $cityId): RajaOngkirResponse`
 Returns districts within a city.
 
 **Parameters:**
@@ -119,10 +121,10 @@ Returns districts within a city.
 
 **Example:**
 ```php
-$districts = RajaOngkir::getDistrict(1);
+$districts = RajaOngkir::getDistrict(1)->toArray();
 ```
 
-##### `getSubDistrict(int $districtId): array`
+##### `getSubDistrict(int|string $districtId): RajaOngkirResponse`
 Returns sub-districts within a district.
 
 **Parameters:**
@@ -147,12 +149,12 @@ Returns sub-districts within a district.
 
 **Example:**
 ```php
-$subdistricts = RajaOngkir::getSubDistrict(1);
+$subdistricts = RajaOngkir::getSubDistrict(1)->toArray();
 ```
 
 #### Direct Search Methods
 
-##### `searchDomestic(string $search, int $limit = 10, int $offset = 0): array`
+##### `searchDomestic(string $search, int $limit = 10, int $offset = 0): RajaOngkirResponse`
 Search for domestic destinations by keyword.
 
 **Parameters:**
@@ -184,10 +186,10 @@ Search for domestic destinations by keyword.
 
 **Example:**
 ```php
-$results = RajaOngkir::searchDomestic('Jakarta Pusat', 5);
+$results = RajaOngkir::searchDomestic('Jakarta Pusat', 5)->toArray();
 ```
 
-##### `searchInternational(string $search, int $limit = 10, int $offset = 0): array`
+##### `searchInternational(string $search, int $limit = 10, int $offset = 0): RajaOngkirResponse`
 Search for international destinations by keyword.
 
 **Parameters:**
@@ -214,12 +216,12 @@ Search for international destinations by keyword.
 
 **Example:**
 ```php
-$results = RajaOngkir::searchInternational('Malaysia', 5);
+$results = RajaOngkir::searchInternational('Malaysia', 5)->toArray();
 ```
 
 #### Cost Calculation
 
-##### `getCostDomestic(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest'): array`
+##### `getCostDomestic(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest'): RajaOngkirResponse`
 Calculate domestic shipping costs.
 
 **Parameters:**
@@ -252,10 +254,10 @@ Calculate domestic shipping costs.
 
 **Example:**
 ```php
-$cost = RajaOngkir::getCostDomestic('1', '108', 1000, 'jne', 'lowest');
+$cost = RajaOngkir::getCostDomestic('1', '108', 1000, 'jne', 'lowest')->toArray();
 ```
 
-##### `getCostInternational(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest'): array`
+##### `getCostInternational(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest'): RajaOngkirResponse`
 Calculate international shipping costs.
 
 **Parameters:**
@@ -289,12 +291,12 @@ Calculate international shipping costs.
 
 **Example:**
 ```php
-$cost = RajaOngkir::getCostInternational('1', '108', 1000, 'jne', 'lowest');
+$cost = RajaOngkir::getCostInternational('1', '108', 1000, 'jne', 'lowest')->toArray();
 ```
 
 #### Tracking
 
-##### `getWaybill(string $waybill, string $courier): array`
+##### `getWaybill(string $waybill, string $courier): RajaOngkirResponse`
 Track package by waybill number.
 
 **Parameters:**
@@ -350,7 +352,7 @@ Track package by waybill number.
 
 **Example:**
 ```php
-$tracking = RajaOngkir::getWaybill('JT123456789', 'jne');
+$tracking = RajaOngkir::getWaybill('JT123456789', 'jne')->toArray();
 ```
 
 #### Utility Methods
@@ -404,18 +406,18 @@ $couriers = RajaOngkir::getListCourier();
 ## Error Handling
 
 ```php
-use Illuminate\Http\Client\RequestException;
+use BlissJaspis\RajaOngkir\Exceptions\RajaOngkirException;
+use BlissJaspis\RajaOngkir\Facades\RajaOngkir;
 
 try {
-    $result = RajaOngkir::getProvinces();
-
-    if ($result['meta']['status'] !== 'success') {
-        throw new \Exception($result['meta']['message']);
-    }
+    $result = RajaOngkir::getProvinces()->toArray();
 
     return $result['data'];
-} catch (RequestException $e) {
-    $statusCode = $e->response->status();
+} catch (RajaOngkirException $e) {
+    // Thrown for failed HTTP requests and API error responses
+    $statusCode = $e->statusCode; // e.g. 400, 401, 404, 429, 500
+    $body = $e->response;         // Decoded API error body (array or null)
+    $message = $e->getMessage();  // Error message from the API
 
     switch ($statusCode) {
         case 401:
@@ -423,10 +425,8 @@ try {
         case 429:
             throw new \Exception('Rate limit exceeded');
         default:
-            throw new \Exception('API request failed');
+            throw new \Exception('API request failed: ' . $message);
     }
-} catch (\Exception $e) {
-    throw new \Exception('RajaOngkir service error: ' . $e->getMessage());
 }
 ```
 
@@ -466,7 +466,7 @@ class CheckoutController extends Controller
                 $request->destination,
                 $request->weight,
                 $request->courier
-            );
+            )->toArray();
 
             return response()->json([
                 'success' => true,
@@ -500,7 +500,7 @@ class AddressController extends Controller
         ]);
 
         try {
-            $results = RajaOngkir::searchDomestic($request->query, 10);
+            $results = RajaOngkir::searchDomestic($request->query('query'), 10)->toArray();
 
             return response()->json([
                 'success' => true,
@@ -529,7 +529,7 @@ class RajaOngkirTest extends TestCase
 {
     public function test_can_get_provinces()
     {
-        $provinces = RajaOngkir::getProvinces();
+        $provinces = RajaOngkir::getProvinces()->toArray();
 
         $this->assertEquals('success', $provinces['meta']['status']);
         $this->assertIsArray($provinces['data']);
@@ -538,7 +538,7 @@ class RajaOngkirTest extends TestCase
 
     public function test_domestic_search_works()
     {
-        $results = RajaOngkir::searchDomestic('Jakarta');
+        $results = RajaOngkir::searchDomestic('Jakarta')->toArray();
 
         $this->assertEquals('success', $results['meta']['status']);
         $this->assertIsArray($results['data']);
@@ -546,7 +546,7 @@ class RajaOngkirTest extends TestCase
 
     public function test_shipping_cost_calculation()
     {
-        $cost = RajaOngkir::getCostDomestic('1', '2', 1000, 'jne');
+        $cost = RajaOngkir::getCostDomestic('1', '2', 1000, 'jne')->toArray();
 
         $this->assertEquals('success', $cost['meta']['status']);
         $this->assertIsArray($cost['data']);
@@ -562,7 +562,7 @@ class RajaOngkirTest extends TestCase
 1. **Cache location data:**
 ```php
 $provinces = Cache::remember('rajaongkir.provinces', 86400, function () {
-    return RajaOngkir::getProvinces();
+    return RajaOngkir::getProvinces()->toArray();
 });
 ```
 
@@ -596,8 +596,11 @@ $result = RajaOngkir::getProvinces();
 // Old response format
 $provinces = $result['rajaongkir']['results'];
 
-// New response format
-$provinces = $result['data'];
+// New response format ($result is a RajaOngkirResponse object)
+$provinces = $result->data;
+
+// Or as a plain array
+$provinces = $result->toArray()['data'];
 ```
 
 3. **Update configuration:**

@@ -85,7 +85,7 @@ public function __construct(private RajaOngkirClient $rajaOngkir) {}
 app(RajaOngkirClient::class)->getProvinces();
 ```
 
-API methods return a `RajaOngkirResponse` object with `meta`, `data`, `status()`, and `successful()`. Use `getListCourier()` when you need the static courier list (hardcoded from Komerce documentation — no API endpoint).
+API methods return a `RajaOngkirResponse` object with `meta`, `data`, `status()`, and `successful()`. Call `->toArray()` when you need a plain array (`['meta' => ..., 'data' => ...]`), for example before returning it from a controller. Use `getListCourier()` when you need the static courier list (hardcoded from Komerce documentation — no API endpoint).
 
 `RajaOngkir` is registered as a **singleton** in the service container, so the facade and `app()` resolve the same instance.
 
@@ -126,8 +126,8 @@ Use this method when users select addresses hierarchically.
 
 #### 1. Finding Provinces
 ```php
-$response = RajaOngkir::getProvinces();
-$provinces = $response->data;
+$response = RajaOngkir::getProvinces()->toArray();
+$provinces = $response['data'];
 
 {
   "meta": {
@@ -152,7 +152,7 @@ $provinces = $response->data;
 #### 2. Finding Cities
 ```php
 $provinceId = 11;
-$cities = RajaOngkir::getCity($provinceId);
+$cities = RajaOngkir::getCity($provinceId)->toArray();
 
 {
   "meta": {
@@ -177,7 +177,7 @@ $cities = RajaOngkir::getCity($provinceId);
 #### 3. Finding Districts
 ```php
 $cityId = 1;
-$districts = RajaOngkir::getDistrict($cityId);
+$districts = RajaOngkir::getDistrict($cityId)->toArray();
 
 {
   "meta": {
@@ -198,7 +198,7 @@ $districts = RajaOngkir::getDistrict($cityId);
 #### 4. Finding Subdistricts
 ```php
 $districtId = 1;
-$subdistricts = RajaOngkir::getSubDistrict($districtId);
+$subdistricts = RajaOngkir::getSubDistrict($districtId)->toArray();
 
 {
   "meta": {
@@ -225,7 +225,7 @@ Use this method when users type destination keywords directly, then you calculat
 $search = 'sinduharjo';
 $limit = 10; // optional
 $offset = 0; // optional
-$destinations = RajaOngkir::searchDomestic($search, $limit, $offset);
+$destinations = RajaOngkir::searchDomestic($search, $limit, $offset)->toArray();
 
 {
   "meta": {
@@ -252,7 +252,7 @@ $destinations = RajaOngkir::searchDomestic($search, $limit, $offset);
 $search = 'Malaysia';
 $limit = 10; // optional
 $offset = 0; // optional
-$destinations = RajaOngkir::searchInternational($search, $limit, $offset);
+$destinations = RajaOngkir::searchInternational($search, $limit, $offset)->toArray();
 
 {
   "meta": {
@@ -278,7 +278,7 @@ $weight = 1000;
 $courier = 'jne';
 $filter = 'lowest';
 
-$cost = RajaOngkir::getCostDomestic($origin, $destination, $weight, $courier, $filter);
+$cost = RajaOngkir::getCostDomestic($origin, $destination, $weight, $courier, $filter)->toArray();
 
 {
   "meta": {
@@ -315,7 +315,7 @@ $weight = 1000;
 $courier = 'jne';
 $filter = 'lowest';
 
-$cost = RajaOngkir::getCostInternational($origin, $destination, $weight, $courier, $filter);
+$cost = RajaOngkir::getCostInternational($origin, $destination, $weight, $courier, $filter)->toArray();
 
 {
   "meta": {
@@ -351,7 +351,7 @@ $cost = RajaOngkir::getCostInternational($origin, $destination, $weight, $courie
 $waybill = 'MT685U91';
 $courier = 'jne';
 
-$waybill = RajaOngkir::getWaybill($waybill, $courier);
+$waybill = RajaOngkir::getWaybill($waybill, $courier)->toArray();
 
 {
   "meta": {
