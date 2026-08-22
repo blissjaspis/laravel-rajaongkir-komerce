@@ -85,7 +85,31 @@ public function __construct(private RajaOngkirClient $rajaOngkir) {}
 app(RajaOngkirClient::class)->getProvinces();
 ```
 
-API methods return a `RajaOngkirResponse` object with `meta`, `data`, `status()`, and `successful()`. Call `->toArray()` when you need a plain array (`['meta' => ..., 'data' => ...]`), for example before returning it from a controller. Use `getListCourier()` when you need the static courier list (hardcoded from Komerce documentation — no API endpoint).
+### The Response Object
+
+Every API method returns a `BlissJaspis\RajaOngkir\Data\RajaOngkirResponse` instance wrapping the API's payload:
+
+| Member | Type | Description |
+|--------|------|-------------|
+| `$meta` | `array` | API metadata (`message`, `code`, `status`) |
+| `$data` | `mixed` | The decoded response payload |
+| `status()` | `?string` | Value of `meta.status`, e.g. `success` |
+| `successful()` | `bool` | `true` when the request succeeded |
+| `toArray()` | `array` | Full payload as `['meta' => ..., 'data' => ...]` |
+
+```php
+$response = RajaOngkir::getProvinces();
+
+$response->successful();        // true
+$response->meta['message'];     // "Success Get Provinces"
+$provinces = $response->data;   // array of provinces
+
+// Or convert to a plain array when you need one,
+// e.g. before returning it from a controller
+$array = $response->toArray();
+```
+
+The only exception is `getListCourier()`, which returns a plain array (see [Other Useful Methods](#other-useful-methods)).
 
 `RajaOngkir` is registered as a **singleton** in the service container, so the facade and `app()` resolve the same instance.
 

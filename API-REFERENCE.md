@@ -37,7 +37,38 @@ All methods are accessible via the facade:
 use BlissJaspis\RajaOngkir\Facades\RajaOngkir;
 ```
 
-All API methods return a `BlissJaspis\RajaOngkir\Data\RajaOngkirResponse` object exposing `meta` (array), `data` (mixed), `successful(): bool`, `status(): ?string`, and `toArray(): array`. Append `->toArray()` when you need a plain array matching the "Response Structure" blocks below (e.g. before returning a response from a controller). The only exception is `getListCourier()`, which returns a plain array.
+### The Response Object
+
+Every API method listed below returns a `BlissJaspis\RajaOngkir\Data\RajaOngkirResponse`. The only exception is `getListCourier()`, which returns a plain array.
+
+| Member | Signature | Description |
+|--------|-----------|-------------|
+| `$meta` | `public readonly array $meta` | API metadata: `message`, `code`, `status` |
+| `$data` | `public readonly mixed $data` | The decoded response payload (typically an array) |
+| `status()` | `public function status(): ?string` | Returns `meta.status` when it is a string, otherwise `null` |
+| `successful()` | `public function successful(): bool` | Returns `true` when the request succeeded (`status === 'success'`) |
+| `toArray()` | `public function toArray(): array` | Full payload as `['meta' => ..., 'data' => ...]` |
+
+**Usage:**
+```php
+use BlissJaspis\RajaOngkir\Facades\RajaOngkir;
+
+$response = RajaOngkir::getProvinces();
+
+if ($response->successful()) {
+    $provinces = $response->data;           // object property access
+    $message   = $response->meta['message'];
+}
+
+// As a plain array — matches the "Response Structure" blocks below
+$array = RajaOngkir::getProvinces()->toArray();
+// [
+//     'meta' => ['message' => ..., 'code' => 200, 'status' => 'success'],
+//     'data' => [...],
+// ]
+```
+
+Failed HTTP requests and API error responses never return this object — they throw `RajaOngkirException` (see [Error Handling](#error-handling)).
 
 ### Core Methods
 
