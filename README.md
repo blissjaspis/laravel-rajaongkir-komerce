@@ -374,8 +374,9 @@ $cost = RajaOngkir::getCostInternational($origin, $destination, $weight, $courie
 ```php
 $waybill = 'MT685U91';
 $courier = 'jne';
+$lastPhoneNumber = '56789'; // last 5 digits of the recipient phone number (required by JNE)
 
-$waybill = RajaOngkir::getWaybill($waybill, $courier)->toArray();
+$waybill = RajaOngkir::getWaybill($waybill, $courier, $lastPhoneNumber)->toArray();
 
 {
   "meta": {

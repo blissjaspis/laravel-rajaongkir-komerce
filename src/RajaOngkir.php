@@ -46,12 +46,18 @@ class RajaOngkir implements RajaOngkirClient
         return $this->sendRequest('get', '/destination/sub-district/'.$districtId);
     }
 
-    public function getWaybill(string $waybill, string $courier): RajaOngkirResponse
+    public function getWaybill(string $waybill, string $courier, string|int|null $lastPhoneNumber = null): RajaOngkirResponse
     {
-        return $this->sendRequest('post', '/track/waybill', [
+        $payload = [
             'awb' => $waybill,
             'courier' => $courier,
-        ]);
+        ];
+
+        if ($lastPhoneNumber !== null && $lastPhoneNumber !== '') {
+            $payload['last_phone_number'] = $lastPhoneNumber;
+        }
+
+        return $this->sendRequest('post', '/track/waybill', $payload);
     }
 
     public function getCostDomestic(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest'): RajaOngkirResponse

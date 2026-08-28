@@ -14,7 +14,7 @@ interface RajaOngkirClient
 
     public function getSubDistrict(int|string $districtId): RajaOngkirResponse;
 
-    public function getWaybill(string $waybill, string $courier): RajaOngkirResponse;
+    public function getWaybill(string $waybill, string $courier, string|int|null $lastPhoneNumber = null): RajaOngkirResponse;
 
     public function getCostDomestic(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest'): RajaOngkirResponse;
 

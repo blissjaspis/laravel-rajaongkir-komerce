@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static RajaOngkirResponse getCity(int|string $provinceId)
  * @method static RajaOngkirResponse getDistrict(int|string $cityId)
  * @method static RajaOngkirResponse getSubDistrict(int|string $districtId)
- * @method static RajaOngkirResponse getWaybill(string $waybill, string $courier)
+ * @method static RajaOngkirResponse getWaybill(string $waybill, string $courier, string|int|null $lastPhoneNumber = null)
  * @method static RajaOngkirResponse getCostDomestic(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest')
  * @method static RajaOngkirResponse getCostInternational(string $origin, string $destination, int $weight, string $courier, string $filter = 'lowest')
  * @method static RajaOngkirResponse searchDomestic(string $search, int $limit = 10, int $offset = 0)

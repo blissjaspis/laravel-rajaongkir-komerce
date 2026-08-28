@@ -147,7 +147,38 @@ class RajaOngkirTest extends TestCase
             return $request->url() === $url &&
                    $request->method() === 'POST' &&
                    $body['awb'] === '123456789' &&
-                   $body['courier'] === 'jne';
+                   $body['courier'] === 'jne' &&
+                   ! array_key_exists('last_phone_number', $body);
+        });
+
+        $this->assertTrue($result->successful());
+    }
+
+    #[Test]
+    public function get_waybill_includes_last_phone_number_when_provided(): void
+    {
+        $url = config('rajaongkir-komerce.base_url').'/track/waybill';
+
+        Http::fake([
+            $url => Http::response([
+                'status' => 'success',
+                'data' => [
+                    'waybill' => '123456789',
+                    'status' => 'delivered',
+                ],
+            ], 200),
+        ]);
+
+        $result = $this->rajaOngkir->getWaybill('123456789', 'jne', '56789');
+
+        Http::assertSent(function ($request) use ($url) {
+            $body = $request->data();
+
+            return $request->url() === $url &&
+                   $request->method() === 'POST' &&
+                   $body['awb'] === '123456789' &&
+                   $body['courier'] === 'jne' &&
+                   $body['last_phone_number'] === '56789';
         });
 
         $this->assertTrue($result->successful());

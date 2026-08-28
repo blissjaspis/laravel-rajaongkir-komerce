@@ -327,12 +327,13 @@ $cost = RajaOngkir::getCostInternational('1', '108', 1000, 'jne', 'lowest')->toA
 
 #### Tracking
 
-##### `getWaybill(string $waybill, string $courier): RajaOngkirResponse`
+##### `getWaybill(string $waybill, string $courier, string|int|null $lastPhoneNumber = null): RajaOngkirResponse`
 Track package by waybill number.
 
 **Parameters:**
 - `$waybill` (string): Tracking number/AWB
 - `$courier` (string): Courier code
+- `$lastPhoneNumber` (string|int|null): Last 5 digits of the recipient phone number. Required by some couriers (for example JNE).
 
 **Response Structure:**
 ```json
@@ -383,7 +384,7 @@ Track package by waybill number.
 
 **Example:**
 ```php
-$tracking = RajaOngkir::getWaybill('JT123456789', 'jne')->toArray();
+$tracking = RajaOngkir::getWaybill('JT123456789', 'jne', '56789')->toArray();
 ```
 
 #### Utility Methods
